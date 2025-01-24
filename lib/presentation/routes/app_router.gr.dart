@@ -11,7 +11,7 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [SignInPage]
+/// [LoginPage]
 class SignInRoute extends PageRouteInfo<SignInRouteArgs> {
   SignInRoute({Key? key, List<PageRouteInfo>? children})
     : super(
@@ -28,7 +28,7 @@ class SignInRoute extends PageRouteInfo<SignInRouteArgs> {
       final args = data.argsAs<SignInRouteArgs>(
         orElse: () => const SignInRouteArgs(),
       );
-      return SignInPage(key: args.key);
+      return LoginPage(key: args.key);
     },
   );
 }
