@@ -1,7 +1,11 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_task/data/repositories/feed_repository.dart';
+import 'package:test_task/presentation/blocs/main/main_bloc.dart';
 
 import '../../../data/models/user.dart';
+import '../../widgets/feed_photo_list.dart';
 
 @RoutePage()
 class MainPage extends StatelessWidget {
@@ -12,10 +16,16 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text('List Page')),
+        actions: [IconButton(onPressed: null, icon: Icon(Icons.search))],
+      ),
       drawer: _MainPageDrawer(user: user),
-      body: SafeArea(
-        // TODO: implement feed
-        child: Placeholder(),
+      body: BlocProvider<MainBloc>(
+        create: (context) => MainBloc(
+          feedRepository: context.read<FeedRepository>(),
+        ),
+        child: _MainPageLayout(),
       ),
     );
   }
@@ -79,6 +89,37 @@ class _MainPageDrawer extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _MainPageLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    context.read<MainBloc>().add(MainFetchFeedRequested());
+
+    return SafeArea(
+      child: BlocBuilder<MainBloc, MainState>(
+        builder: (context, state) {
+          return switch (state.status) {
+            MainStatus.loading => Center(child: CircularProgressIndicator()),
+            // TODO: add refresh button to Centers
+            MainStatus.error => Center(child: Text('An error occurred!')),
+            MainStatus.empty => Center(child: Text('No content available :(')),
+            MainStatus.data => RefreshIndicator(
+                onRefresh: () async {
+                  Future block = context.read<MainBloc>().stream.first;
+                  context.read<MainBloc>().add(MainFetchFeedRequested());
+                  await block;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: FeedPhotoList(photos: state.photos),
+                ),
+              ),
+          };
+        },
       ),
     );
   }
