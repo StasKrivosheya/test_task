@@ -2,9 +2,10 @@ import 'package:test_task/data/models/user.dart';
 import 'package:test_task/data/network/auth/user_service.dart';
 
 class UserRepository {
-  final UserService _userService;
+  UserRepository({required UserService userService})
+      : _userService = userService;
 
-  UserRepository(this._userService);
+  final UserService _userService;
 
   Future<User?> loginWith({required String email, required String password}) async {
     try {
