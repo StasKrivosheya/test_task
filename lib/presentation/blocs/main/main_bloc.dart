@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:test_task/data/models/feed_photo.dart';
@@ -30,10 +29,5 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     } else {
       emit(state.copyWith(status: MainStatus.data, photos: photos));
     }
-  }
-
-  List<FeedPhoto> sortPhotosByAuthorName(List<FeedPhoto> photos) {
-    photos.sort((a, b) => a.authorName.compareTo(b.authorName));
-    return photos;
   }
 }

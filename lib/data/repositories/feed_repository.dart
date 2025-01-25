@@ -12,11 +12,19 @@ class FeedRepository {
   final FeedService _feedService;
   final EnvService _envService;
 
-  Future<List<FeedPhoto>?> getPhotos() async {
+  Future<List<FeedPhoto>?> getPhotos({bool sorted = true}) async {
     try {
       final apiKey = _envService.getPexelsApiKey();
 
       final feedResponse = await _feedService.getFeed(apiKey);
+
+      // TODO: sort in Isolate
+      if (sorted) {
+        feedResponse.photos.sort((a, b) => a.photographer
+            .toUpperCase()
+            .compareTo(b.photographer.toUpperCase()));
+      }
+
       final feedPhotos = [
         for (final responsePhoto in feedResponse.photos)
           FeedPhoto.fromFeedResponsePhoto(responsePhoto)
