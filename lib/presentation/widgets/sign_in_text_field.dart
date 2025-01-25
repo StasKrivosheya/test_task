@@ -7,6 +7,7 @@ class SignInTextField extends StatelessWidget {
     required this.hintText,
     this.errorText,
     this.obscureText = false,
+    this.disabled = false,
     this.onChanged,
     this.onFocusLost,
   });
@@ -15,6 +16,7 @@ class SignInTextField extends StatelessWidget {
   final String hintText;
   final String? errorText;
   final bool obscureText;
+  final bool disabled;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onFocusLost;
 
@@ -26,16 +28,20 @@ class SignInTextField extends StatelessWidget {
           onFocusLost?.call();
         }
       },
-      child: TextField(
-        onChanged: onChanged,
-        onTapOutside: (event) => FocusScope.of(context).unfocus(),
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: labelText,
-          hintText: hintText,
-          errorText: errorText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
+      child: Opacity(
+        opacity: disabled ? 0.5 : 1,
+        child: TextField(
+          readOnly: disabled,
+          onChanged: onChanged,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            hintText: hintText,
+            errorText: errorText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+          ),
         ),
       ),
     );

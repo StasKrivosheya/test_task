@@ -12,34 +12,16 @@ part of 'app_router.dart';
 
 /// generated route for
 /// [LoginPage]
-class SignInRoute extends PageRouteInfo<SignInRouteArgs> {
-  SignInRoute({Key? key, List<PageRouteInfo>? children})
-    : super(
-        SignInRoute.name,
-        args: SignInRouteArgs(key: key),
-        initialChildren: children,
-      );
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+    : super(LoginRoute.name, initialChildren: children);
 
-  static const String name = 'SignInRoute';
+  static const String name = 'LoginRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<SignInRouteArgs>(
-        orElse: () => const SignInRouteArgs(),
-      );
-      return LoginPage(key: args.key);
+      return const LoginPage();
     },
   );
-}
-
-class SignInRouteArgs {
-  const SignInRouteArgs({this.key});
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'SignInRouteArgs{key: $key}';
-  }
 }
