@@ -1,7 +1,9 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_task/data/repositories/user_repository.dart';
+import 'package:test_task/presentation/routes/app_router.dart';
 import 'package:test_task/presentation/widgets/sign_in_text_field.dart';
 
 import '../../blocs/login/login_bloc.dart';
@@ -50,8 +52,8 @@ class _LoginLayout extends StatelessWidget {
                       content: Text('Server error. Please, try again'),
                     ));
                   } else if (state.status == LoginStatus.success) {
-                    final parameter = state.user;
-                    // TODO: perform navigation to the next page
+                    final parameter = state.user!;
+                    context.router.replace(MainRoute(user: parameter));
                   }
                 },
                 builder: (context, state) {

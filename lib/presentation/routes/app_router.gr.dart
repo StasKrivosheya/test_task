@@ -25,3 +25,37 @@ class LoginRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [MainPage]
+class MainRoute extends PageRouteInfo<MainRouteArgs> {
+  MainRoute({Key? key, required User user, List<PageRouteInfo>? children})
+    : super(
+        MainRoute.name,
+        args: MainRouteArgs(key: key, user: user),
+        initialChildren: children,
+      );
+
+  static const String name = 'MainRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<MainRouteArgs>();
+      return MainPage(key: args.key, user: args.user);
+    },
+  );
+}
+
+class MainRouteArgs {
+  const MainRouteArgs({this.key, required this.user});
+
+  final Key? key;
+
+  final User user;
+
+  @override
+  String toString() {
+    return 'MainRouteArgs{key: $key, user: $user}';
+  }
+}
