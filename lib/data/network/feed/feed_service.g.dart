@@ -39,7 +39,7 @@ class _FeedService implements FeedService {
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late FeedResponse _value;
     try {
-      _value = FeedResponse.fromJson(_result.data!);
+      _value = await compute(deserializeFeedResponse, _result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

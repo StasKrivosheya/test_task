@@ -19,7 +19,7 @@ Map<String, dynamic> _$FeedResponseToJson(FeedResponse instance) =>
     <String, dynamic>{
       'page': instance.page,
       'per_page': instance.perPage,
-      'photos': instance.photos,
+      'photos': instance.photos.map((e) => e.toJson()).toList(),
       'next_page': instance.nextPage,
     };
 
@@ -46,7 +46,7 @@ Map<String, dynamic> _$PhotoToJson(Photo instance) => <String, dynamic>{
       'photographer_url': instance.photographerUrl,
       'photographer_id': instance.photographerId,
       'avg_color': instance.avgColor,
-      'src': instance.src,
+      'src': instance.src.toJson(),
       'liked': instance.liked,
       'alt': instance.alt,
     };

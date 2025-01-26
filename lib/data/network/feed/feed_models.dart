@@ -5,7 +5,7 @@ part 'feed_models.g.dart';
 // Classes based on response json, generated and pasted from:
 // Instantly generate Dart from JSON https://app.quicktype.io/
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FeedResponse {
   @JsonKey(name: "page")
   final int page;
@@ -28,7 +28,7 @@ class FeedResponse {
   Map<String, dynamic> toJson() => _$FeedResponseToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Photo {
   @JsonKey(name: "id")
   final int id;
@@ -72,7 +72,7 @@ class Photo {
   Map<String, dynamic> toJson() => _$PhotoToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Src {
   @JsonKey(name: "original")
   final String original;
