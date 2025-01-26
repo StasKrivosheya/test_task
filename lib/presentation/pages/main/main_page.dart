@@ -15,18 +15,43 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<MainBloc>(
+      create: (context) => MainBloc(
+        feedRepository: context.read<FeedRepository>(),
+      ),
+      child: _PageScaffold(
+        user: user,
+      ),
+    );
+  }
+}
+
+class _PageScaffold extends StatelessWidget {
+  const _PageScaffold({super.key, required this.user});
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('List Page')),
-        actions: [IconButton(onPressed: null, icon: Icon(Icons.search))],
+        actions: [
+          BlocBuilder<MainBloc, MainState>(
+            builder: (context, state) {
+              return IconButton(
+                  onPressed: state.status == MainStatus.loading
+                      ? null
+                      : () => context
+                          .read<MainBloc>()
+                          .add(MainFetchFeedRequested()),
+                  icon: Icon(Icons.refresh));
+            },
+          )
+        ],
       ),
       drawer: _MainPageDrawer(user: user),
-      body: BlocProvider<MainBloc>(
-        create: (context) => MainBloc(
-          feedRepository: context.read<FeedRepository>(),
-        ),
-        child: _MainPageLayout(),
-      ),
+      body: _MainPageLayout(),
     );
   }
 }
@@ -104,7 +129,6 @@ class _MainPageLayout extends StatelessWidget {
         builder: (context, state) {
           return switch (state.status) {
             MainStatus.loading => Center(child: CircularProgressIndicator()),
-            // TODO: add refresh button to Centers
             MainStatus.error => Center(child: Text('An error occurred!')),
             MainStatus.empty => Center(child: Text('No content available :(')),
             MainStatus.data => RefreshIndicator(
