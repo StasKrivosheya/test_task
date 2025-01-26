@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:test_task/data/models/user.dart';
 import 'package:test_task/data/repositories/user_repository.dart';
+import 'package:test_task/utils/validation_utils.dart';
 
 part 'login_event.dart';
 
@@ -35,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _onLoginEmailFocusLost(LoginEmailFocusLost event, Emitter<LoginState> emit) {
-    final (:isValidEmail, :errorMessage) = _validateEmail(state.email);
+    final (:isValidEmail, :errorMessage) = ValidationUtils.validateEmail(state.email);
     emit(state.copyWith(
       emailError: errorMessage,
       clearEmailError: isValidEmail,
@@ -44,7 +45,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onLoginPasswordFocusLost(
       LoginPasswordFocusLost event, Emitter<LoginState> emit) {
-    final (:isValidPassword, :errorMessage) = _validatePassword(state.password);
+    final (:isValidPassword, :errorMessage) =
+        ValidationUtils.validatePassword(state.password);
     emit(state.copyWith(
       passwordError: errorMessage,
       clearPasswordError: isValidPassword,
@@ -53,9 +55,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onLoginSubmitted(LoginSubmitted event, Emitter<LoginState> emit) async {
     final (:isValidEmail, errorMessage: errorMessageEmail) =
-        _validateEmail(state.email);
+        ValidationUtils.validateEmail(state.email);
     final (:isValidPassword, errorMessage: errorMessagePassword) =
-        _validatePassword(state.password);
+        ValidationUtils.validatePassword(state.password);
 
     final inputsValid = isValidEmail && isValidPassword;
 
@@ -85,41 +87,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(status: LoginStatus.success, user: resultUser));
       }
     }
-  }
-
-  ({bool isValidEmail, String? errorMessage}) _validateEmail(String email) {
-    final regex = RegExp(
-        r"^[a-zA-Z0-9.!#$%&\'*+\\/=?^_`{|}~-]{1,10}@(?:(?!.*--)[a-zA-Z0-9-]{1,10}(?<!-))(?:\.(?:[a-zA-Z0-9-]{2,10}))+");
-    final isValidEmail = email.isNotEmpty &&
-        email.length >= 6 &&
-        email.length <= 30 &&
-        regex.hasMatch(email);
-    const errorMessage = 'Email is incorrect';
-    return (
-      isValidEmail: isValidEmail,
-      errorMessage: isValidEmail ? null : errorMessage
-    );
-  }
-
-  ({bool isValidPassword, String? errorMessage}) _validatePassword(
-      String password) {
-    final hasUppercase = password.contains(RegExp(r'[A-Z]')) ||
-        password.contains(RegExp(r'[А-Я]'));
-    final hasLowercase = password.contains(RegExp(r'[a-z]')) ||
-        password.contains(RegExp(r'[а-я]'));
-    final hasDigit = password.contains(RegExp(r'\d'));
-    final isValidPassword = password.isNotEmpty &&
-        password.length >= 6 &&
-        password.length <= 10 &&
-        hasUppercase &&
-        hasLowercase &&
-        hasDigit;
-
-    const errorMessage = 'Password is incorrect';
-
-    return (
-      isValidPassword: isValidPassword,
-      errorMessage: isValidPassword ? null : errorMessage
-    );
   }
 }

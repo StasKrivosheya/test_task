@@ -1,4 +1,4 @@
-import 'package:test_task/data/network/auth/user_service.dart';
+import 'package:test_task/data/network/auth/user_models.dart';
 
 final class User {
   final String firstName;

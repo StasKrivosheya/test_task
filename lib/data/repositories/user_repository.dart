@@ -1,4 +1,5 @@
 import 'package:test_task/data/models/user.dart';
+import 'package:test_task/data/network/auth/user_models.dart';
 import 'package:test_task/data/network/auth/user_service.dart';
 
 class UserRepository {

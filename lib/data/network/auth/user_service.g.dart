@@ -3,22 +3,6 @@
 part of 'user_service.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-UserCredentials _$UserCredentialsFromJson(Map<String, dynamic> json) =>
-    UserCredentials(
-      email: json['email'] as String,
-      password: json['password'] as String,
-    );
-
-Map<String, dynamic> _$UserCredentialsToJson(UserCredentials instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'password': instance.password,
-    };
-
-// **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
